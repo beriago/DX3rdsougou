@@ -1193,12 +1193,12 @@ button,input,select{font:inherit}
   background:var(--panel);color:var(--ink);height:45px;max-width:220px
 }
 .dloise-single-row{flex-wrap:nowrap}
-.dloise-single-row > input{width:150px;min-width:0;flex:1 1 auto;padding:10px 12px}
-.dloise-single-row .syndrome-select{max-width:140px;flex:0 0 auto}
+.dloise-single-row > input{width:110px;min-width:80px;flex:1 1 auto;padding:10px 10px}
+.dloise-single-row .syndrome-select{max-width:120px;flex:0 0 auto}
 .dloise-single-row .supplement-options{
-  min-height:auto;padding:6px 8px;flex-wrap:nowrap;flex:0 0 auto;margin-top:0
+  min-height:auto;padding:6px 6px;flex-wrap:nowrap;flex:0 0 auto;margin-top:0;gap:4px 8px
 }
-.dloise-single-row .supplement-options label{font-size:12px}
+.dloise-single-row .supplement-options label{font-size:11px;gap:2px}
 .clear-x-btn{
   background:#FBE1E3;color:#C0392B;border:none;border-radius:6px;
   padding:0 12px;height:45px;font-size:16px;line-height:1;cursor:pointer;flex:none
