@@ -98,7 +98,8 @@ function updateSavedCostTotal(){
   if(!box) return;
 
   const experienceTotal = acquiredEffects.reduce((total, e) => {
-    const lv = Math.max(1, Number(e.acquiredLv || 1));
+    const lv = Math.max(0, Number(e.acquiredLv ?? 1));
+    if (lv === 0) return total;
     if (e.isDloiseExclusive) {
       // Dロイス専用エフェクトは取得時(Lv1)の基礎10点を課さず、
       // Lv1から上げたレベル数分だけ5点ずつ加算する
@@ -119,7 +120,7 @@ function savedEffectIdentity(e){
 function saveSavedEffectsToBrowser(){
   try{
     localStorage.setItem(SAVED_STORAGE_KEY, JSON.stringify(acquiredEffects.map(e=>({
-      name:e.name,supplement:e.supplement,syndrome:e.syndrome,acquiredLv:Number(e.acquiredLv||1)
+      name:e.name,supplement:e.supplement,syndrome:e.syndrome,acquiredLv:Number(e.acquiredLv??1)
     }))));
   }catch(err){ console.warn("自動保存に失敗しました。",err); }
 }
@@ -130,7 +131,7 @@ function restoreSavedEntries(entries){
     if(!item||typeof item!=="object") return;
     const found=effects.find(e=>String(e.name||"")===String(item.name||"")&&String(e.supplement||"")===String(item.supplement||"")&&String(e.syndrome||"")===String(item.syndrome||""));
     if(!found) return;
-    const lv=Math.max(1,Number(item.acquiredLv||1));
+    const lv=Math.max(0,Number(item.acquiredLv??1));
     if(!restored.some(e=>savedEffectIdentity(e)===savedEffectIdentity(found))) restored.push({...found,acquiredLv:lv});
   });
   acquiredEffects=restored;
@@ -148,7 +149,7 @@ function loadSavedEffectsFromBrowser(){
 }
 function exportSavedEffects(){
   const payload={format:"DX3rd Effect Scanner Saved Build",version:1,exportedAt:new Date().toISOString(),effects:acquiredEffects.map(e=>({
-    name:e.name,supplement:e.supplement,syndrome:e.syndrome,acquiredLv:Number(e.acquiredLv||1)
+    name:e.name,supplement:e.supplement,syndrome:e.syndrome,acquiredLv:Number(e.acquiredLv??1)
   }))};
   const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});
   const url=URL.createObjectURL(blob),a=document.createElement("a");
@@ -174,8 +175,8 @@ function getMaxLv(e){
 function changeSavedLv(index, delta){
   const e = acquiredEffects[index];
   if(!e) return;
-  const current = Number(e.acquiredLv || 1);
-  e.acquiredLv = Math.max(1, current + delta);
+  const current = Number(e.acquiredLv ?? 1);
+  e.acquiredLv = Math.max(0, current + delta);
   renderSaved();
 }
 
@@ -225,7 +226,7 @@ function renderSaved(){
             <div class="saved-lv-control">
               <span class="saved-lv-label">取得LV</span>
               <span class="saved-lv-btn" data-lv-index="${index}" data-lv-delta="-1">−</span>
-              <span class="saved-lv-value">${Number(e.acquiredLv || 1)}</span>
+              <span class="saved-lv-value">${Number(e.acquiredLv ?? 1)}</span>
               <span class="saved-lv-btn" data-lv-index="${index}" data-lv-delta="1">＋</span>
               <span class="saved-lv-label">／最大LV${getMaxLv(e)}</span>
             </div>
@@ -720,7 +721,7 @@ window.addEventListener("load", () => {
 // ---- キャラクターシートへの統合 ----
 function fxExportForCharacter(){
   return acquiredEffects.map(e => ({
-    name: e.name, supplement: e.supplement, syndrome: e.syndrome, acquiredLv: Number(e.acquiredLv || 1)
+    name: e.name, supplement: e.supplement, syndrome: e.syndrome, acquiredLv: Number(e.acquiredLv ?? 1)
   }));
 }
 function fxImportForCharacter(list){
