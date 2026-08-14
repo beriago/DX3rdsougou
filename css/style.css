@@ -1,0 +1,1986 @@
+/* ---------- 全体 ---------- */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+
+    background:var(--bg);
+
+    color:var(--ink);
+
+    font-family:
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    "Hiragino Kaku Gothic ProN",
+    "Yu Gothic UI",
+    "Meiryo",
+    sans-serif;
+
+    font-size:13px;
+
+    line-height:1.5;
+
+}
+
+
+/* ---------- コンテナ ---------- */
+
+.container{
+
+    max-width:1560px;
+
+    margin:auto;
+
+    padding:20px;
+
+}
+
+
+/* ---------- ヘッダー ---------- */
+
+header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:18px;
+
+}
+
+h1{
+
+    font-size:24px;
+
+    font-weight:bold;
+
+}
+
+.titleRow{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    flex-wrap:wrap;
+}
+
+.titleButtons{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    flex-wrap:wrap;
+}
+
+.headerButtons{
+
+    display:flex;
+
+    gap:8px;
+
+}
+
+
+/* ---------- ボタン ---------- */
+
+button{
+
+    border:none;
+
+    background:var(--accent);
+
+    color:var(--accent-text,white);
+
+    padding:7px 14px;
+
+    border-radius:6px;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+    font-size:13px;
+
+}
+
+button:hover{
+
+    background:var(--accent-hover,#365785);
+
+}
+
+
+/* ---------- カード ---------- */
+
+.card{
+
+    background:var(--panel);
+
+    border:1px solid var(--line);
+
+    border-radius:10px;
+
+    padding:14px 14px 14px 16px;
+
+    margin-bottom:18px;
+
+    border-left:4px solid var(--accent-soft);
+
+}
+
+
+/* ---------- タイトル ---------- */
+
+h2{
+
+    margin-bottom:12px;
+
+    font-size:17px;
+
+    font-weight:700;
+
+    letter-spacing:.01em;
+
+}
+
+.quadGrid h2{
+    font-size:13px;
+    font-weight:700;
+    margin-bottom:8px;
+}
+
+
+/* ---------- 横並び ---------- */
+
+.row{
+
+    display:flex;
+
+    gap:15px;
+
+    margin-bottom:10px;
+
+}
+
+.syndromeRow{
+
+    margin-top:10px;
+
+}
+
+
+/* ---------- 入力 ---------- */
+
+.inputGroup{
+
+    display:flex;
+
+    flex-direction:column;
+
+    flex:1;
+
+}
+
+
+
+.inputGroup.name{
+
+    flex:2;
+
+}
+
+.inputGroup.codename{
+
+    flex:3;
+
+}
+
+.inputGroup.small{
+
+    flex:1;
+
+    min-width:70px;
+
+}
+
+/* キャラクター／特徴カード：入力欄を細く・縦に伸びないように */
+.characterFields input,
+.characterPreferenceGrid input,
+.appearanceInline input{
+    padding:5px 6px;
+    font-size:12px;
+    height:30px;
+    box-sizing:border-box;
+}
+
+.inputGroup.full{
+
+    flex:100%;
+
+}
+
+label{
+
+    margin-bottom:4px;
+
+    font-size:12px;
+
+    color:var(--muted);
+
+}
+
+
+input,
+select,
+textarea{
+
+    border:1px solid var(--line);
+
+    border-radius:6px;
+
+    background:var(--panel);
+
+    color:var(--ink);
+
+    padding:8px;
+
+    font-size:13px;
+
+}
+
+
+input:focus,
+select:focus,
+textarea:focus{
+
+    outline:none;
+
+    border-color:var(--accent);
+
+}
+
+
+/* ---------- 3カラム ---------- */
+
+.tripleGrid{
+
+    display:grid;
+
+    grid-template-columns:
+
+    0.9fr
+    1.1fr
+    2fr;
+
+    gap:15px;
+
+    margin-bottom:15px;
+
+}
+
+/* ---------- メインレイアウト（左：基本情報類／右：エフェクト） ---------- */
+
+.mainLayout{
+    display:grid;
+    grid-template-columns:1.1fr 1fr;
+    gap:15px;
+    align-items:start;
+}
+
+.fxCol{
+    min-width:0;
+    position:sticky;
+    top:15px;
+}
+
+.fxCol .fxApp{
+    margin-bottom:0;
+}
+
+.charCol{
+    min-width:0;
+}
+
+@media (min-width:1201px){
+    html, body{
+        height:100%;
+        overflow:hidden;
+    }
+    .container{
+        height:100vh;
+        display:flex;
+        flex-direction:column;
+        overflow:hidden;
+    }
+    header{
+        flex-shrink:0;
+    }
+    .mainLayout{
+        flex:1;
+        min-height:0;
+        overflow:hidden;
+    }
+    .fxCol{
+        position:static;
+        top:auto;
+        height:100%;
+        overflow-y:auto;
+        padding-right:6px;
+    }
+    .charCol{
+        height:100%;
+        overflow-y:auto;
+        padding-right:6px;
+    }
+}
+
+@media (max-width:1200px){
+    .mainLayout{
+        display:flex;
+        flex-direction:column;
+    }
+    .fxCol{
+        position:static;
+    }
+}
+
+/* ---------- 左カラムの折りたたみ ----------
+   左のエフェクト／Dロイス検索を隠し、キャラクターシート側を
+   意図的な2カラム構成で表示する。
+   左列：キャラクター／ワークス・シンドローム／4カラム(能力値・ステータス・技能・ライフパス)
+   右列：取得エフェクト／コンボ／取得Dロイス／アイテム／ロイス／メモリー／設定メモ
+   各カードは通常表示と同じスタイルのまま、列幅（約半分）に収まるので
+   個別の圧縮調整は不要。 */
+html.fxCollapsed,
+body.fxCollapsed,
+body.fxCollapsed .container{
+    height:auto;
+    overflow:visible;
+}
+body.fxCollapsed .mainLayout{
+    display:block;
+    overflow:visible;
+}
+body.fxCollapsed .fxCol{
+    display:none;
+}
+body.fxCollapsed .charCol{
+    height:auto;
+    overflow:visible;
+    padding-right:0;
+    width:100%;
+    display:flex;
+    align-items:flex-start;
+    gap:20px;
+}
+body.fxCollapsed .charColLeft,
+body.fxCollapsed .charColRight{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+    flex:1 1 0;
+    min-width:0;
+}
+body.fxCollapsed .charCol .card,
+body.fxCollapsed .charCol .quadGrid{
+    margin-bottom:0;
+    min-width:0;
+}
+#toggleFxColBtn.active{
+    background:var(--accent-soft);
+}
+.worksCard .card-body-collapsible{
+    display:grid;
+    grid-template-columns:0.8fr 1.4fr 0.8fr;
+    gap:12px 20px;
+}
+body.fxCollapsed .worksCard .card-body-collapsible{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:flex-start;
+}
+body.fxCollapsed .worksCard .abilityField{
+    flex:0.8 1 0%;
+    min-width:0;
+}
+body.fxCollapsed .worksCard .worksField{
+    flex:1.4 1 0%;
+    min-width:0;
+}
+body.fxCollapsed .worksCard .coverField{
+    flex:0.8 1 0%;
+    min-width:0;
+}
+
+/* ---------- 4カラム ---------- */
+
+.quadGrid{
+    display:grid;
+    grid-template-columns:minmax(0,0.85fr) minmax(0,0.7fr) minmax(0,1.55fr) minmax(0,0.8fr);
+    grid-auto-rows:480px;
+    gap:8px;
+    margin-bottom:8px;
+    align-items:stretch;
+}
+
+.quadGrid > .card{
+    min-width:0;
+    min-height:0;
+    display:flex;
+    flex-direction:column;
+    overflow-y:auto;
+    padding:10px 10px 10px 12px;
+    margin-bottom:0;
+}
+
+.skillCard{
+    min-height:0;
+}
+
+.skillCard .skillColumnList{
+    flex:1 1 auto;
+    min-height:0;
+    overflow-y:auto;
+    overflow-x:hidden;
+    scrollbar-gutter:stable;
+    padding-right:8px;
+    box-sizing:border-box;
+}
+
+.statusCard .statusGrid{
+    flex:1 1 auto;
+}
+
+@media (max-width:768px){
+    .quadGrid{
+        display:flex;
+        flex-direction:column;
+    }
+}
+
+/* ---------- 能力値 ---------- */
+
+.abilityList{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    flex:1;
+}
+
+.abilityRow{
+    border-bottom:1px solid #EEE;
+    padding-bottom:5px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    gap:3px;
+    flex:1;
+}
+
+.abilityRow:last-child{
+    border-bottom:none;
+    padding-bottom:0;
+}
+
+.abilityHead{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    margin-bottom:2px;
+}
+
+.abilityName{
+    font-weight:bold;
+    font-size:16px;
+}
+
+.abilityFinal{
+    font-weight:bold;
+    font-size:18px;
+    color:#4A6FA5;
+}
+
+.counterCell{
+    display:inline-flex;
+    align-items:center;
+    gap:3px;
+    white-space:nowrap;
+}
+
+.counterCell .counterLabel{
+    font-size:11px;
+    color:#666;
+    margin-right:2px;
+}
+
+.miniBtn{
+    padding:1px 6px;
+    font-size:11px;
+    min-width:20px;
+    line-height:1.4;
+    border-radius:4px;
+    background:var(--accent-soft);
+    color:var(--accent);
+    border:none;
+    font-weight:bold;
+}
+
+.miniBtn:hover{
+    background:var(--accent);
+    color:var(--accent-text,white);
+}
+
+.counterNum{
+    display:inline-block;
+    min-width:1.3em;
+    text-align:center;
+    font-size:12px;
+}
+
+/* ---------- ステータスカード ---------- */
+
+.statusGrid{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    flex:1;
+}
+
+.statusItem{
+    background:var(--bg);
+    border-radius:8px;
+    padding:6px 10px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    flex:1;
+    min-width:0;
+}
+
+.statusItem .statusLabel{
+    font-size:12px;
+    color:#666;
+    display:block;
+    white-space:nowrap;
+}
+
+.statusItem .statusNum{
+    font-size:20px;
+    font-weight:bold;
+    white-space:nowrap;
+}
+
+.statusItem.exp{
+    grid-column:unset;
+}
+
+.statusItem.exp .statusNum{
+    font-size:22px;
+    color:#4A6FA5;
+}
+
+.statusItem.erosionItem,
+.statusItem.statAdjustItem{
+    flex-direction:column;
+    align-items:stretch;
+    justify-content:center;
+    gap:4px;
+}
+
+.statusItem.erosionItem .erosionTop,
+.statusItem.statAdjustItem .erosionTop{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:8px;
+}
+
+.erosionAdjustRow{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:3px;
+}
+
+.erosionAdjustBtn{
+    flex:0 0 auto;
+    width:24px;
+    height:24px;
+    padding:0;
+    line-height:1;
+    font-size:14px;
+    font-weight:bold;
+    border-radius:6px;
+    border:none;
+    background:var(--accent-soft);
+    color:var(--accent);
+}
+
+.erosionAdjustBtn:hover{
+    background:var(--accent);
+    color:var(--accent-text,white);
+}
+
+.erosionAdjustBtn.small{
+    width:18px;
+    height:18px;
+    font-size:11px;
+    border-radius:4px;
+}
+
+.erosionAdjustVal{
+    min-width:2.2em;
+    text-align:center;
+    font-size:13px;
+    font-weight:700;
+    color:#4A6FA5;
+}
+
+.erosionAdjustVal.small{
+    min-width:2.2em;
+    font-size:11px;
+}
+
+/* ---------- 消費経験点 合計フローティングバッジ ---------- */
+
+.viewMode input:disabled,
+.viewMode select:disabled,
+.viewMode textarea:disabled{
+    opacity:1;
+    color:inherit;
+    background:transparent;
+    cursor:default;
+}
+
+/* 閲覧モードでは「追加・削除・変更」系の操作だけを隠す。
+   検索・詳細表示・取得エフェクト一覧の閲覧などはそのまま使える。 */
+body.viewMode #saveBtn,
+body.viewMode #loadBtn,
+body.viewMode #resetBtn,
+body.viewMode #shareLinkBtn,
+body.viewMode #addComboBtn,
+body.viewMode #addSkillBtn,
+body.viewMode #addWeaponBtn,
+body.viewMode #addArmorBtn,
+body.viewMode #addGeneralBtn,
+body.viewMode #addMemoryBtn,
+body.viewMode #dloiseAcquireBtn,
+body.viewMode .delete-combo-btn,
+body.viewMode .duplicate-combo-btn,
+body.viewMode .combo-move-btn,
+body.viewMode .removeSkillBtn,
+body.viewMode .skillBtn,
+body.viewMode .abilityBtn,
+body.viewMode .delete-item-btn,
+body.viewMode .saved-remove,
+body.viewMode .saved-lv-btn,
+body.viewMode .group-erosion-btn,
+body.viewMode .erosionAdjustBtn,
+body.viewMode .linked-save-btn,
+body.viewMode .save-btn,
+body.viewMode .remove-saved-btn{
+    display:none !important;
+}
+
+.viewModeBanner{
+    position:sticky;
+    top:0;
+    z-index:2500;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:12px;
+    background:#5b6572;
+    color:#fff;
+    padding:8px 14px;
+    font-size:13px;
+    font-weight:700;
+}
+
+.viewModeBanner button{
+    background:#fff;
+    color:#5b6572;
+    border:none;
+    border-radius:6px;
+    padding:4px 10px;
+    font-size:12px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.expFloatBadge{
+    position:fixed;
+    bottom:14px;
+    right:14px;
+    z-index:2000;
+    display:flex;
+    align-items:baseline;
+    gap:6px;
+    background:#4A6FA5;
+    color:#fff;
+    padding:8px 14px;
+    border-radius:20px;
+    box-shadow:0 3px 10px rgba(0,0,0,.25);
+    font-family:inherit;
+    pointer-events:none;
+}
+
+.expFloatBadgeLabel{
+    font-size:11px;
+    opacity:.85;
+    white-space:nowrap;
+}
+
+.expFloatBadgeValue{
+    font-size:18px;
+    font-weight:bold;
+    white-space:nowrap;
+}
+
+@media (max-width:768px){
+    .expFloatBadge{
+        top:auto;
+        bottom:14px;
+        right:14px;
+        padding:6px 12px;
+    }
+    .expFloatBadgeLabel{font-size:10px;}
+    .expFloatBadgeValue{font-size:15px;}
+}
+
+/* ---------- 技能カラム ---------- */
+
+.skillColumnList{
+    display:flex;
+    flex-direction:column;
+    gap:3px;
+}
+
+.skillRow{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+    padding:5px 3px;
+    border-bottom:1px solid #EEE;
+    font-size:13px;
+}
+
+.skillRow .skillMain{
+    display:flex;
+    flex-wrap:nowrap;
+    align-items:center;
+    gap:6px;
+}
+
+.skillRow select.skillNameSelect{
+    flex:1 1 auto;
+    min-width:0;
+    padding:4px;
+    font-size:13px;
+}
+
+.skillRow input.skillCustomInput{
+    width:100%;
+    box-sizing:border-box;
+    padding:4px;
+    font-size:13px;
+}
+
+.skillRow .skillLv{
+    font-weight:bold;
+    min-width:2.6em;
+    text-align:center;
+    font-size:13px;
+    flex:none;
+}
+
+.skillRow .skillCounters{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+}
+
+.skillRow .removeSkillBtn{
+    background:#FBE1E3;
+    color:#C0392B;
+    border:none;
+    padding:2px 8px;
+    font-size:13px;
+    line-height:1.4;
+    min-width:auto;
+    flex:none;
+    border-radius:4px;
+}
+
+.skillRow .removeSkillBtn:hover{
+    background:#F5C2C6;
+}
+
+#addSkillBtn{
+    align-self:flex-start;
+    margin-top:4px;
+    padding:5px 12px;
+    font-size:12px;
+}
+
+
+/* ---------- 能力 ---------- */
+
+.statusTable{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+}
+
+.statusTable td{
+
+    padding:6px;
+
+    border-bottom:1px solid #EEE;
+
+}
+
+.statusTable td:last-child{
+
+    text-align:right;
+
+    font-weight:bold;
+
+}
+
+
+/* ---------- 技能 ---------- */
+
+#skillBox{
+
+    list-style:none;
+
+    max-height:150px;
+
+    overflow-y:auto;
+
+}
+
+#skillBox li{
+
+    padding:5px 0;
+
+    border-bottom:1px solid #EEE;
+
+}
+
+
+/* ---------- キャラ ---------- */
+
+.characterFields{
+    display:grid;
+    grid-template-columns:repeat(6,1fr);
+    gap:12px;
+}
+.characterFields .inputGroup.name{
+    grid-column:1 / 4;
+}
+.characterFields .inputGroup.codename{
+    grid-column:4 / 7;
+}
+.characterFields .inputGroup.small{
+    grid-column:span 2;
+}
+body.fxCollapsed .characterFields{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:flex-start;
+}
+body.fxCollapsed .characterFields .inputGroup.name,
+body.fxCollapsed .characterFields .inputGroup.codename,
+body.fxCollapsed .characterFields .inputGroup.small{
+    grid-column:unset;
+}
+
+
+
+
+
+
+
+/* --- Header buttons --- */
+.headerButtons{
+    display:flex;
+    gap:8px;
+    width:auto;
+}
+.headerButtons button{
+    min-width:84px;
+    padding:5px 14px;
+    flex:none;
+}
+
+/* --- Appearance --- */
+.appearanceInline{
+    width:100%;
+    display:grid;
+    grid-template-columns:2fr 1fr 1fr 1fr 2fr 2fr;
+    gap:12px;
+    align-items:end;
+}
+
+.appearanceInline .item{
+    display:flex;
+    flex-direction:column;
+    min-width:0;
+}
+
+.appearanceRow{
+    display:flex;
+    gap:10px;
+    margin-bottom:10px;
+}
+
+.appearanceRow:last-child{
+    margin-bottom:0;
+}
+
+.appearanceRow .item{
+    flex:1;
+    display:flex;
+    align-items:center;
+    gap:4px;
+    min-width:0;
+}
+
+.appearanceRow label{
+    margin:0;
+    white-space:nowrap;
+}
+
+.appearanceRow input{
+    flex:1;
+    width:100%;
+    min-width:0;
+    padding:6px;
+}
+
+.w-hair,.w-xs,.w-mid{
+    width:100%;
+}
+
+textarea{
+    width:100%;
+    min-height:165px;
+    resize:vertical;
+}
+
+@media (max-width:768px){
+
+  .appearanceRow{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+  }
+
+  .appearanceRow .item{
+      display:flex;
+      flex-direction:column;
+      align-items:stretch;
+  }
+
+  .appearanceRow label{
+      margin:0 0 4px 0;
+      white-space:normal;
+  }
+
+  .appearanceRow input{
+      width:100%;
+  }
+
+}
+
+
+/* --- 好き・嫌い・口調（調整） --- */
+.characterPreferenceGrid{
+    display:grid;
+    grid-template-columns:1fr 1fr 2fr;
+    gap:12px;
+    margin-top:2px;
+    width:100%;
+}
+
+.characterPreferenceGrid .inputGroup{
+    display:flex;
+    flex-direction:column;
+    min-width:0;
+}
+
+.characterPreferenceGrid label{
+    margin-bottom:2px;
+}
+
+.characterPreferenceGrid input{
+    width:100%;
+}
+
+/* =========================
+   スマホ対応
+========================= */
+@media (max-width: 768px){
+
+    .container{
+        padding:12px;
+    }
+
+    header{
+        flex-direction:column;
+        align-items:stretch;
+        gap:12px;
+    }
+
+    h1{
+        font-size:32px;
+        text-align:center;
+        line-height:1.2;
+    }
+
+    .headerButtons{
+        width:100%;
+    }
+
+    .headerButtons button{
+        flex:1;
+    }
+
+    .row,
+    .characterFields,
+    .characterPreferenceGrid,
+    .tripleGrid{
+
+        display:flex;
+        flex-direction:column;
+
+    }
+
+    .appearanceInline{
+        display:grid;
+        grid-template-columns:1fr 1fr 1fr;
+        gap:12px;
+        align-items:start;
+    }
+
+    .appearanceInline .item,
+    .appearanceInline .item:nth-child(1),
+    .appearanceInline .item:nth-child(2),
+    .appearanceInline .item:nth-child(3),
+    .appearanceInline .item:nth-child(4),
+    .appearanceInline .item:nth-child(5),
+    .appearanceInline .item:nth-child(6){
+        display:flex;
+        flex-direction:column;
+        align-items:stretch;
+        flex:none !important;
+        width:auto !important;
+        min-width:0 !important;
+    }
+
+    .appearanceInline input,
+    .appearanceInline .w-hair,
+    .appearanceInline .w-xs,
+    .appearanceInline .w-mid{
+        width:100% !important;
+        min-width:0 !important;
+    }
+}
+
+
+
+
+:root{
+  --bg:#F3F4F6;
+  --panel:#ffffff;
+  --ink:#333333;
+  --muted:#666666;
+  --line:#D6DCE5;
+  --accent:#4A6FA5;
+  --accent-hover:#365785;
+  --accent-soft:#E6ECF5;
+  --accent-text:#ffffff;
+  --shadow:0 2px 8px rgba(74,111,165,.08);
+  color-scheme:light;
+}
+
+:root[data-theme="dark"]{
+  --bg:#1B1D22;
+  --panel:#25272E;
+  --ink:#E7E9EE;
+  --muted:#A0A6B2;
+  --line:#3A3D46;
+  --accent:#5C8AD1;
+  --accent-hover:#7BA1DE;
+  --accent-soft:#33425E;
+  --accent-text:#0F1216;
+  --shadow:0 2px 8px rgba(0,0,0,.35);
+  color-scheme:dark;
+}
+
+:root[data-theme="green"]{
+  --bg:#E4EEE2;
+  --panel:#F4F9F2;
+  --ink:#243824;
+  --muted:#57705A;
+  --line:#B9D3B4;
+  --accent:#4C8A5E;
+  --accent-hover:#3D7350;
+  --accent-soft:#D3E8CE;
+  --accent-text:#ffffff;
+  --shadow:0 2px 8px rgba(76,138,94,.15);
+  color-scheme:light;
+}
+
+
+/* ---------- テーマ切り替え ---------- */
+.themeSwitcher{display:flex;align-items:center;gap:6px;margin-right:8px}
+.themeSwitcher select{padding:6px 8px;font-size:12px}
+
+*{box-sizing:border-box}
+.fxApp{color:var(--ink);font-family:inherit;}
+.fxApp{border-left-color:var(--accent);}
+button,input,select{font:inherit}
+
+
+.sub{display:none}
+.search-panel,.results-panel,.detail-panel{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:14px;
+  box-shadow:var(--shadow);
+}
+.search-panel{padding:18px;margin-bottom:18px}
+.main-search{display:flex;gap:10px;align-items:flex-end}
+.main-search > input{
+  width:min(100%,300px);padding:13px 15px;border:1px solid var(--line);
+  border-radius:9px;background:var(--panel);outline:none;
+}
+.supplement-filter{flex:1;min-width:0;margin-top:6px}
+#supplementOptions{
+  display:grid;grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:6px 10px;min-height:auto
+}
+#supplementOptions label{justify-content:center}
+.supplement-label{display:block;font-size:12px;color:var(--muted);margin:0 0 5px}
+.supplement-options{
+  min-height:45px;padding:8px 10px;border:1px solid var(--line);border-radius:9px;
+  background:var(--panel);display:flex;gap:8px 12px;align-items:center;flex-wrap:wrap
+}
+.syndrome-row .supplement-options{
+  display:flex;flex-wrap:nowrap;overflow-x:auto
+}
+.supplement-options label{
+  display:flex;align-items:center;gap:4px;font-size:13px;white-space:nowrap;cursor:pointer
+}
+.supplement-options input{width:auto;margin:0;accent-color:var(--accent)}
+.main-search input:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.clear-btn,.copy-btn{
+  border:0;border-radius:9px;cursor:pointer;font-weight:700;
+}
+.clear-btn{padding:0 18px;background:var(--accent-soft);color:var(--ink)}
+.syndrome-select{
+  padding:0 12px;border:1px solid var(--line);border-radius:9px;
+  background:var(--panel);color:var(--ink);height:45px;max-width:220px
+}
+.dloise-single-row{flex-wrap:nowrap}
+.dloise-single-row > input{width:150px;min-width:0;flex:1 1 auto;padding:10px 12px}
+.dloise-single-row .syndrome-select{max-width:140px;flex:0 0 auto}
+.dloise-single-row .supplement-options{
+  min-height:auto;padding:6px 8px;flex-wrap:nowrap;flex:0 0 auto;margin-top:0
+}
+.dloise-single-row .supplement-options label{font-size:12px}
+.clear-x-btn{
+  background:#FBE1E3;color:#C0392B;border:none;border-radius:6px;
+  padding:0 12px;height:45px;font-size:16px;line-height:1;cursor:pointer;flex:none
+}
+.clear-x-btn:hover{background:#F5C2C6}
+.tag.syndrome-tag{background:var(--accent-soft);color:var(--accent)}
+.filters{
+  display:grid;grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:12px;margin-top:0
+}
+.syndrome-row{margin-top:8px}
+.syndrome-row .supplement-label{margin-bottom:5px}
+.syndrome-row .supplement-options{flex-wrap:nowrap;overflow-x:auto;gap:6px 8px}
+.syndrome-row .supplement-options label{flex-shrink:0;font-size:12px;white-space:nowrap}
+.filter label{display:block;font-size:12px;color:var(--muted);margin:0 0 5px}
+select{
+  width:100%;padding:10px;border:1px solid var(--line);
+  border-radius:8px;background:var(--panel);outline:none
+}
+.content{display:grid;grid-template-columns:minmax(280px,.8fr) minmax(0,1.2fr);gap:18px}
+.results-panel{overflow:hidden}
+.results-head{
+  padding:14px 16px;border-bottom:1px solid var(--line);
+  display:flex;justify-content:space-between;align-items:center
+}
+.results-head strong{font-size:15px}
+.count{font-size:12px;color:var(--muted)}
+.results{max-height:400px;overflow:auto}
+.result{
+  width:100%;border:0;border-bottom:1px solid #D6DCE5;background:transparent;
+  text-align:left;padding:15px 16px;cursor:pointer;color:var(--ink)
+}
+.result:hover{background:var(--bg)}
+.result.active{background:var(--accent-soft);border-left:4px solid var(--accent);padding-left:12px}
+.result-name{font-weight:700;margin-bottom:5px;font-size:15px}
+.result-preview{
+  margin-top:7px;
+  font-size:12px;
+  line-height:1.55;
+  color:var(--muted);
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+.tags{display:flex;gap:6px;flex-wrap:wrap}
+.tag{font-size:11px;padding:3px 7px;border-radius:999px;background:var(--line);color:var(--ink)}
+
+/* ---------- サプリメント別タグ配色（単色チップ＋白文字、どのテーマでも視認可） ---------- */
+.tag[data-sup="EA"]{background:#3A5A8C;color:#fff}
+.tag[data-sup="IA"]{background:#2C7A52;color:#fff}
+.tag[data-sup="HR"]{background:#A34C74;color:#fff}
+.tag[data-sup="BC"]{background:#6647A6;color:#fff}
+.tag[data-sup="RW"]{background:#B3401F;color:#fff}
+.tag[data-sup="CC"]{background:#5B6472;color:#fff}
+.tag[data-sup="UA"]{background:#9A6B00;color:#fff}
+.tag[data-sup="LM"]{background:#0E7C72;color:#fff}
+
+.detail-panel{padding:22px;min-height:420px}
+.detail-top{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;flex-wrap:wrap}
+.detail-top h2{margin:0;font-size:22px;line-height:1.3}
+.syndrome{color:var(--accent);font-weight:700;margin-top:4px}
+.copy-btn{padding:10px 15px;background:var(--accent);color:var(--accent-text);white-space:nowrap}
+.saved-effect-card{border-bottom:1px solid var(--line);padding:12px 14px}
+.saved-effect-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.saved-effect-name{font-weight:700;font-size:15px}
+.saved-effect-name-btn{background:none;border:none;padding:0;margin:0;cursor:pointer;color:inherit;text-align:left;flex:0 0 auto}
+.saved-effect-name-btn:hover .saved-effect-name{text-decoration:underline;color:var(--accent)}
+.saved-effect-preview{flex:1;font-size:12px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+
+/* ---------- ボタンの役割別配色 ---------- */
+:root{ --danger:#C0574A; --danger-hover:#A8452F; }
+:root[data-theme="dark"]{ --danger:#D97565; --danger-hover:#C15644; }
+:root[data-theme="green"]{ --danger:#B65A3E; --danger-hover:#9A4830; }
+.btn-danger{background:var(--danger)}
+.btn-danger:hover{background:var(--danger-hover)}
+#resetBtn,#clearSavedBtn{background:var(--danger)}
+#resetBtn:hover,#clearSavedBtn:hover{background:var(--danger-hover)}
+.remove-saved-btn{color:var(--danger);border-color:var(--danger)}
+.remove-saved-btn:hover{background:rgba(192,57,43,.12)}
+.saved-remove{color:var(--danger)}
+.btn-secondary{background:var(--panel);color:var(--accent);border:1px solid var(--accent)}
+.btn-secondary:hover{background:var(--accent-soft)}
+#loadBtn,.clear-btn{background:var(--panel);color:var(--accent);border:1px solid var(--accent)}
+#loadBtn:hover,.clear-btn:hover{background:var(--accent-soft)}
+.remove-saved-btn{border:1px solid var(--line);border-radius:7px;background:var(--panel);color:var(--text);font-size:12px;padding:5px 9px;cursor:pointer}
+.remove-saved-btn:hover{background:var(--bg)}
+.specs{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:1px;background:var(--line);border:1px solid var(--line);
+  border-radius:10px;overflow:hidden;margin:20px 0
+}
+.spec{background:var(--panel);padding:11px}
+.spec-label{display:block;font-size:11px;color:var(--muted);margin-bottom:4px}
+.spec-value{font-size:14px;font-weight:700}
+.effect-title{font-size:13px;color:var(--muted);margin:0 0 8px}
+.effect-text{
+  margin:0;padding:17px;background:var(--bg);border-left:4px solid var(--accent);
+  border-radius:6px;line-height:1.9;white-space:pre-wrap
+}
+.no-results{padding:32px 18px;text-align:center;color:var(--muted)}
+.search-highlight{background:#f2d58a;color:#332400;padding:0 .08em;border-radius:2px}
+@media(max-width:800px){
+  .app{padding:18px 12px 36px}
+  .filters{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .content{grid-template-columns:1fr}
+  .results{max-height:400px}
+  .specs{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .detail-panel{min-height:0}
+  .empty{min-height:220px}
+  .syndrome-row .supplement-options{position:relative}
+  .syndrome-row{position:relative}
+  .syndrome-row::after{
+    content:"";position:absolute;top:23px;right:0;width:28px;height:45px;
+    background:linear-gradient(to right,rgba(244,241,236,0),var(--bg));
+    pointer-events:none
+  }
+  .tags .tag:nth-child(n+3){display:none}
+  .result{padding:14px 14px}
+  .result-name{font-size:15px}
+  .save-btn,.copy-btn{min-height:44px}
+  .saved-remove{width:30px;height:30px}
+  .saved-lv-btn{width:30px;height:30px}
+}
+@media(max-width:480px){
+  .main-search{display:grid;grid-template-columns:1fr auto}
+  .main-search > input{width:100%;grid-column:1 / -1}
+  .supplement-filter{grid-column:1 / -1}
+  .syndrome-select{grid-column:1 / -1;max-width:none;width:100%}
+  .filters{grid-template-columns:1fr 1fr}
+  .detail-top{display:block}
+  .copy-btn{margin-top:14px;width:100%}
+}
+
+.saved-head{
+  padding:14px 15px;border-bottom:1px solid var(--line);
+  display:flex;justify-content:space-between;align-items:center
+}
+.saved-clear{
+  border:0;background:transparent;color:var(--muted);font-size:12px;cursor:pointer
+}
+.saved-data-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;padding:9px 12px;border-bottom:1px solid var(--line);background:var(--panel)}
+.fxAcquiredHead .saved-data-actions{display:none}
+.saved-data-btn{padding:8px 6px;border:1px solid var(--line);border-radius:7px;background:var(--panel);color:var(--text);font-size:12px;font-weight:700;cursor:pointer}
+.saved-data-btn:hover{background:var(--bg)}
+.saved-cost-title{
+  padding:9px 14px 4px;
+  background:var(--bg);
+  font-size:13px;
+  font-weight:700;
+}
+.saved-cost-total{
+  padding:4px 14px 9px;
+  border-bottom:1px solid var(--line);
+  background:var(--bg);
+  font-size:12px;
+  line-height:1.45;
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:3px 14px;
+}
+.saved-cost-row{
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  min-width:0;
+  padding:2px 0;
+}
+.saved-cost-row span{color:var(--muted);white-space:nowrap}
+.saved-cost-row strong{text-align:right;overflow-wrap:anywhere}
+.saved-exp-row span,
+.saved-exp-row strong{color:var(--accent)}
+.saved-effects{overflow:auto;max-height:calc(100vh - 130px)}
+.saved-empty{padding:24px 14px;text-align:center;color:var(--muted);font-size:13px}
+.saved-group-title{
+  padding:8px 14px 6px;
+  background:var(--bg);
+  border-bottom:1px solid var(--line);
+  font-size:12px;
+  font-weight:700;
+  color:var(--accent);
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+}
+.group-erosion-adjust{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  margin-left:6px;
+}
+.saved-item{
+  width:100%;border:0;border-bottom:1px solid #D6DCE5;background:transparent;
+  text-align:left;padding:12px 38px 12px 14px;cursor:pointer;position:relative;color:var(--ink)
+}
+.saved-item:hover{background:var(--bg)}
+.saved-name{font-weight:700;font-size:14px;margin-bottom:4px}
+.saved-meta{font-size:11px;color:var(--muted)}
+.saved-lv-control{display:flex;align-items:center;gap:5px;margin-top:6px}
+.saved-lv-label{font-size:11px;color:var(--muted)}
+.saved-lv-btn{width:24px;height:22px;padding:0;border:1px solid var(--line);border-radius:5px;background:var(--panel);cursor:pointer;font-weight:700;line-height:1}
+.saved-lv-btn:hover{background:var(--accent-soft)}
+.saved-lv-value{min-width:18px;text-align:center;font-size:12px;font-weight:700}
+.saved-remove{
+  position:absolute;right:10px;top:50%;transform:translateY(-50%);
+  width:24px;height:24px;border:0;border-radius:50%;background:var(--accent-soft);
+  color:var(--muted);cursor:pointer
+}
+.save-btn{
+  padding:10px 15px;border:1px solid var(--accent);border-radius:9px;
+  background:var(--panel);color:var(--accent);font-weight:700;cursor:pointer;white-space:nowrap
+}
+.save-btn.saved{background:var(--accent-soft)}
+.detail-actions{display:flex;gap:8px}
+
+@media(min-width:801px){
+  .detail-panel{
+    align-self:start;
+    min-height:0;
+  }
+}
+
+.fxApp .content{margin-top:14px}
+
+/* ---------- 取得エフェクト（キャラクターカラム内・4カラムの下に独立カード表示） ---------- */
+.fxAcquiredCard{margin-bottom:15px}
+.fxAcquiredHead{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:6px 10px;
+  margin-bottom:8px;
+}
+.fxAcquiredHead h2{margin-bottom:0}
+.saved-exp-inline{font-size:12px;font-weight:700;color:var(--accent);margin-left:4px}
+.saved-group-erosion{font-size:11px;font-weight:700;color:var(--accent)}
+.saved-group-erosion-manual{font-size:10px;font-weight:700;color:#c0392b;margin-left:2px}
+.fxAcquiredCard .saved-data-actions{
+  display:none !important;
+}
+.fxAcquiredCard .saved-data-btn{
+  padding:4px 8px;
+  font-size:11px;
+  border-radius:6px;
+  white-space:nowrap;
+}
+.fxAcquiredCard .saved-cost-title{
+  margin:0 -12px;
+  width:calc(100% + 24px);
+  padding:5px 12px 2px;
+  font-size:11px;
+}
+.fxAcquiredCard .saved-cost-total{
+  margin:0 -12px;
+  width:calc(100% + 24px);
+  padding:2px 12px 7px;
+  font-size:11px;
+  line-height:1.35;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:1px 10px;
+}
+.fxAcquiredCard .saved-cost-row{padding:1px 0}
+.fxAcquiredCard .saved-effects{
+  max-height:none;
+  overflow:visible;
+  margin:0 -12px;
+  width:calc(100% + 24px);
+}
+.fxAcquiredCard .saved-group:first-child .saved-group-title{border-top:1px solid var(--line)}
+.fxAcquiredCard .saved-group{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(170px,1fr));
+  gap:6px 8px;
+  padding:6px 12px;
+}
+.fxAcquiredCard .saved-group-title{
+  grid-column:1 / -1;
+  margin:0 -12px;
+  width:calc(100% + 24px);
+  padding:6px 12px 4px;
+}
+.fxAcquiredCard .saved-item{
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:8px 26px 8px 10px;
+}
+.fxAcquiredCard .saved-name{font-size:13px;margin-bottom:2px}
+.fxAcquiredCard .saved-meta{font-size:10px}
+.fxAcquiredCard .saved-lv-control{margin-top:4px}
+.fxAcquiredCard .saved-remove{right:6px;width:20px;height:20px}
+
+
+
+/* Combo */
+.combo-toolbar{margin-bottom:12px;}
+.itemGroup{margin-bottom:20px;}
+.itemGroupHeader{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;}
+.itemGroupHeader h3{margin:0;font-size:1em;}
+.itemGroupTitle{display:flex;align-items:center;gap:8px;}
+.group-toggle-btn{
+  border:1px solid #888;background:transparent;color:inherit;
+  width:22px;height:22px;line-height:1;border-radius:6px;cursor:pointer;
+  font-size:11px;display:flex;align-items:center;justify-content:center;
+  transition:transform .15s ease;flex:none;padding:0;
+}
+.group-toggle-btn:hover{background:rgba(255,255,255,.08);}
+.itemGroup.collapsed .group-toggle-btn{transform:rotate(-90deg);}
+.itemGroup.collapsed .itemTableWrap{display:none;}
+.itemTableWrap{overflow-x:auto;border:1px solid #888;border-radius:8px;}
+.itemTable{min-width:100%;}
+.itemTableHeader{display:flex;gap:6px;padding:6px 10px;background:rgba(255,255,255,.06);font-size:.85em;font-weight:bold;white-space:nowrap;border-bottom:1px solid #888;}
+.item-empty{padding:12px;color:#777;white-space:nowrap;}
+.item-row{display:flex;gap:6px;align-items:center;padding:6px 10px;border-bottom:1px solid rgba(136,136,136,.4);white-space:nowrap;}
+.item-row:last-child{border-bottom:none;}
+.itemTableHeader span, .item-row span{flex:0 0 auto;box-sizing:border-box;}
+.col-name{width:140px;}
+.col-equip{width:56px;text-align:center;}
+.col-exp{width:60px;}
+.col-skill{width:90px;}
+.col-check{width:20px;display:flex;align-items:center;justify-content:center;}
+.col-check input[type="checkbox"]{width:auto;}
+.item-row.s-checked{background:#ffe6c2;}
+.item-row.s-checked input,
+.item-row.s-checked textarea,
+.item-row.s-checked select{background:#ffd9a8;}
+.col-hit{width:70px;}
+.col-atk{width:80px;}
+.col-guard{width:80px;}
+.col-range{width:70px;}
+.col-action{width:70px;}
+.col-dodge{width:80px;}
+.col-armor{width:70px;}
+.col-effect{width:220px;}
+.col-del{width:32px;text-align:center;}
+.item-row input[type="text"], .item-row input[type="number"]{width:100%;box-sizing:border-box;}
+.scroll-cell{overflow-x:auto;}
+.combo-empty{padding:12px;color:#777;}
+.combo-item{border:1px solid #888;border-radius:8px;padding:10px;margin:10px 0;}
+.combo-move-btns{display:inline-flex;gap:2px;margin-right:2px;}
+.combo-move-btn{
+    width:20px;
+    height:20px;
+    padding:0;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    line-height:1;
+    font-size:12px;
+    font-weight:bold;
+    border-radius:5px;
+    border:none;
+    background:var(--accent-soft);
+    color:var(--accent);
+    cursor:pointer;
+}
+.combo-move-btn:hover{background:var(--accent);color:var(--accent-text,white);}
+.combo-header,.combo-body{display:flex;align-items:center;font-size:12px;}
+.combo-body-wrap{display:flex;flex-direction:column;}
+.combo-header{gap:4px;}
+.combo-header input{height:22px;padding:1px 4px;font-size:12px;}
+.req-erosion{width:60px;}
+.effect-name{flex:1;min-width:0;}
+.combo-body{width:100%;gap:4px;flex-wrap:nowrap;overflow:hidden;white-space:nowrap;margin-top:10px;}
+.combo-body input{height:22px;padding:1px 3px;font-size:12px;flex:none;}
+.combo-notes-row{width:100%;margin-top:4px;}
+.combo-notes{
+    display:block;
+    width:100%;
+    box-sizing:border-box;
+    height:26px;
+    min-height:0;
+    max-height:26px;
+    line-height:1;
+    padding:1px 6px;
+    margin:0;
+    font-size:12px;
+    font-family:inherit;
+    white-space:nowrap;
+    overflow-x:auto;
+    overflow-y:hidden;
+    resize:none;
+    vertical-align:top;
+    scrollbar-width:thin;
+}
+.combo-notes::-webkit-scrollbar{
+    height:5px;
+}
+.combo-notes::-webkit-scrollbar-thumb{
+    background:#aaa;
+    border-radius:3px;
+}
+.combo-notes::-webkit-scrollbar-track{
+    background:transparent;
+}
+
+.combo-roll{
+    display:flex;
+    align-items:center;
+    gap:2px;
+    flex:none;
+}
+
+.combo-buttons{
+    display:flex;
+    align-items:center;
+    gap:2px;
+    flex:none;
+    min-width:60px;
+}
+
+.combo-sep{flex:none;margin:0 1px;}
+.combo-dice{width:28px;}
+.combo-crit{width:24px;}
+.combo-skill{width:28px;}
+.combo-range{width:90px;}
+
+.combo-target{width:110px;min-width:90px;flex:none;}
+
+.combo-atk,.combo-erosion2{width:55px;}
+.cardHeadRow{
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:6px 10px;margin-bottom:8px;
+}
+.cardHeadRow h2{margin-bottom:0}
+.small-add-btn{
+  width:26px;height:24px;padding:0;
+  border:1px solid var(--line);border-radius:6px;
+  background:var(--accent-soft);color:var(--ink);
+  font-size:15px;line-height:1;font-weight:700;
+  cursor:pointer;flex:none;
+}
+.small-add-btn:hover{filter:brightness(0.97);}
+.small-btn{
+    width:24px;
+    height:20px;
+    padding:0;
+    font-size:10px;
+    line-height:1;
+    border-radius:4px;
+    flex:none;
+}
+.duplicate-combo-btn{background:#2563eb;}
+.delete-combo-btn{background:#dc2626;}
+
+/* ---------- 関連エフェクト／専用アイテム 3カラムグリッド ---------- */
+.linked-section-title{
+  margin-top:20px;
+  margin-bottom:8px;
+  font-weight:bold;
+  font-size:14px;
+  color:var(--muted, #666);
+}
+.linked-grid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:16px;
+}
+.linked-card{
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:14px 16px;
+  background:var(--panel);
+}
+.linked-card .linked-card-title{
+  font-weight:bold;
+  font-size:15px;
+  margin-bottom:10px;
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  gap:6px;
+}
+.linked-card .linked-card-title .kind-tag{
+  font-size:11px;
+  font-weight:normal;
+  padding:2px 8px;
+  border-radius:999px;
+  background:var(--accent-soft);
+  color:#4A6FA5;
+  white-space:nowrap;
+}
+.linked-card .specs.linked-specs{
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  margin:0 0 12px;
+}
+@media (max-width: 420px){
+  .linked-card .specs.linked-specs{grid-template-columns:repeat(2,minmax(0,1fr));}
+}
+.linked-card .effect-title{margin:0 0 6px}
+.linked-card .linked-card-effect{
+  font-size:14px;
+  line-height:1.8;
+  color:var(--text);
+  padding:14px;
+  background:var(--bg);
+  border-left:4px solid var(--accent);
+  border-radius:6px;
+  white-space:pre-wrap;
+}
+
+.linked-details{margin-top:20px;}
+.linked-details > summary.linked-section-title{
+  margin-top:0;
+  cursor:pointer;
+  user-select:none;
+  list-style:none;
+}
+.linked-details > summary.linked-section-title::-webkit-details-marker{display:none;}
+.linked-details > summary.linked-section-title::before{
+  content:"▶ ";
+  font-size:10px;
+}
+.linked-details[open] > summary.linked-section-title::before{
+  content:"▼ ";
+}
+.linked-details .linked-grid{margin-top:8px;}
+
+.linked-save-btn{
+  margin-top:8px;
+  width:100%;
+  padding:6px 8px;
+  font-size:12px;
+  border:1px solid var(--accent);
+  border-radius:6px;
+  background:var(--panel);
+  color:var(--accent);
+  cursor:pointer;
+}
+.linked-save-btn.saved{
+  background:var(--accent);
+  color:var(--accent-text);
+}
+
+.restriction-tag{
+  background:#FFE8D6 !important;
+  color:#B45309 !important;
+  font-weight:600;
+}
+
+/* ---- カラムの折りたたみ機能 ---- */
+.collapsible-card{position:relative;}
+.card-toggle-btn{
+  position:absolute;
+  left:50%;
+  bottom:-9px;
+  transform:translateX(-50%);
+  width:auto;
+  min-width:0;
+  margin:0;
+  padding:0 10px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:var(--panel);
+  color:var(--muted);
+  font-weight:700;
+  font-size:10px;
+  line-height:1.6;
+  cursor:pointer;
+  text-align:center;
+  opacity:.45;
+  box-shadow:0 1px 2px rgba(0,0,0,.12);
+  z-index:2;
+  transition:opacity .15s ease, color .15s ease;
+}
+.card-toggle-btn:hover{opacity:1;color:var(--ink);}
+.collapsible-card.collapsed .card-body-collapsible{display:none;}
+
+/* ---- キャラクターシート出力（印刷／画像化）用スタイル ----
+   .printMode は出力の瞬間だけ body に付け外しする。
+   @media print はプレビュー/実印刷時、通常クラスはhtml2canvas撮影時に効く。 */
+.printMode #expFloatBadge,
+.printMode header,
+.printMode .fxCol,
+.printMode .card-toggle-btn,
+.printMode .group-toggle-btn,
+.printMode .small-add-btn,
+.printMode .delete-item-btn,
+.printMode .delete-combo-btn,
+.printMode .duplicate-combo-btn,
+.printMode .saved-remove,
+.printMode .remove-saved-btn,
+.printMode #addWeaponBtn,
+.printMode #addArmorBtn,
+.printMode #addGeneralBtn,
+.printMode #addMemoryBtn,
+.printMode #addRoisBtn,
+.printMode #addComboBtn,
+.printMode #addSkillBtn,
+.printMode .removeSkillBtn,
+.printMode .col-del,
+.printMode .miniBtn,
+.printMode .abilityBtn{
+  display:none !important;
+}
+.printMode,
+html.printMode,
+body.printMode,
+.printMode .container{
+  height:auto !important;
+  overflow:visible !important;
+}
+.printMode .mainLayout{
+  flex:none !important;
+  overflow:visible !important;
+}
+.printMode{background:#fff;color:#111;font-size:12px;}
+.printMode .container{max-width:1200px;padding:10px;}
+.printMode .mainLayout{display:block;}
+.printMode .charCol{width:100%;}
+/* シート全体を2カラム化して縦の長さを大きく圧縮する
+   （左：キャラクター／ワークス／4カラム、右：エフェクト以下） */
+.printMode .charCol{
+  display:flex;
+  align-items:flex-start;
+  gap:14px;
+}
+.printMode .charColLeft,
+.printMode .charColRight{
+  flex:1 1 0;
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.printMode .charCol .card,
+.printMode .charCol .quadGrid{
+  margin-bottom:0;
+}
+.printMode h2{font-size:13px;margin-bottom:6px;}
+.printMode .card{padding:8px 10px;margin-bottom:10px;border-radius:6px;}
+.printMode .quadGrid{
+  grid-template-columns:1fr;
+  grid-auto-rows:auto;
+  align-items:start;
+  gap:10px;
+}
+.printMode .quadGrid > .card{
+  overflow:visible;
+  max-height:none;
+  padding:8px 10px;
+}
+.printMode .skillCard .skillColumnList{
+  overflow:visible;
+  max-height:none;
+}
+.printMode .abilityRow,
+.printMode .statusItem{margin-bottom:4px;}
+
+/* ラベルと値を横並びの「ラベル：値」形式にして行数を減らす */
+.printMode .inputGroup{
+  display:flex;
+  flex-direction:row;
+  flex-wrap:wrap;
+  align-items:baseline;
+  gap:4px 6px;
+  margin-bottom:3px;
+}
+.printMode .inputGroup label{
+  flex:0 0 auto;
+  white-space:nowrap;
+  color:#555;
+}
+.printMode .inputGroup label::after{
+  content:"：";
+}
+.printMode .inputGroup .print-text-field{
+  flex:1 1 auto;
+  min-width:40px;
+}
+/* ワークス・シンドロームは元の3列グリッド配置を維持する（block化しない） */
+.printMode .worksCard .card-body-collapsible{
+  display:grid !important;
+  grid-template-columns:0.8fr 1.4fr 0.8fr;
+  gap:4px 14px;
+}
+.printMode .fxAcquiredCard .saved-group{
+  grid-template-columns:repeat(auto-fill,minmax(140px,1fr));
+  gap:5px 6px;
+  padding:5px 8px;
+}
+.printMode .fxAcquiredCard .saved-item{padding:6px 20px 6px 8px;}
+.printMode .fxAcquiredCard .saved-name{font-size:12px;}
+.printMode .fxAcquiredCard .saved-meta{font-size:9px;}
+.printMode .card{
+  border:1px solid #999;
+  break-inside:avoid;
+  box-shadow:none;
+  background:#fff;
+}
+.printMode .collapsible-card .card-body-collapsible{display:block !important;}
+
+/* フォーム部品はJSで実テキストに置き換えて表示する */
+.printMode input,
+.printMode select,
+.printMode textarea{
+  display:none;
+}
+.printMode input[type="checkbox"]{
+  display:inline-block !important;
+}
+.print-text-field{
+  display:inline-block;
+  min-width:24px;
+  border-bottom:1px solid #ccc;
+  padding:1px 3px;
+  color:#111;
+  font-size:inherit;
+}
+.print-text-block{
+  display:block;
+  white-space:pre-wrap;
+  border:none;
+  border-bottom:none;
+  padding:4px 2px;
+  min-height:1.4em;
+}
+.printMode .itemTableWrap{overflow:visible;border:1px solid #999;}
+.printMode .itemTable{min-width:0;}
+.printMode .itemTableHeader{display:none;}
+.printMode .item-row{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  column-gap:14px;
+  row-gap:2px;
+  white-space:normal;
+  border-bottom:1px solid #ddd;
+  padding:6px 4px;
+  break-inside:avoid;
+}
+.printMode .item-row:last-child{border-bottom:none;}
+.printMode .item-row > span{
+  display:inline-block;
+  width:auto !important;
+  flex:none !important;
+  padding:1px 0;
+  word-break:normal;
+  overflow-wrap:break-word;
+}
+/* 効果・説明のような長文項目だけは行を占有して改行する（印刷／画像出力時のみ） */
+.printMode .item-row > span.col-effect,
+.printMode .item-row > span.scroll-cell{
+  display:block;
+  width:100% !important;
+  margin-top:2px;
+}
+.printMode .item-row > span[data-label]::before{
+  content:attr(data-label) "：";
+  font-weight:700;
+  color:#555;
+  margin-right:2px;
+}
+.printMode .item-row .col-check{display:inline-block;width:auto;}
+.printMode .item-row .col-del{display:none;}
+
+/* 短い項目のリストは、量が多いときに横2カラムへ流す（印刷／画像出力時のみ。
+   折りたたみ3カラム表示では charCol 側が既に複数カラムなので二重に割らない） */
+.printMode #roisList,
+.printMode #generalList,
+.printMode #weaponList,
+.printMode #armorList,
+.printMode #memoryList{
+  column-count:2;
+  column-gap:18px;
+}
+.printMode #roisList .item-row,
+.printMode #generalList .item-row,
+.printMode #weaponList .item-row,
+.printMode #armorList .item-row,
+.printMode #memoryList .item-row{
+  break-inside:avoid;
+  -webkit-column-break-inside:avoid;
+}
+.printMode .saved-effects,
+body.fxCollapsed .saved-effects{max-height:none !important;overflow:visible !important;}
+.printMode .results-panel,
+.printMode .detail-panel{max-height:none !important;overflow:visible !important;}
+.printMode .combo-body{
+  overflow:visible !important;
+  white-space:normal !important;
+  flex-wrap:wrap !important;
+  height:auto !important;
+}
+.printMode .combo-header{flex-wrap:wrap !important;}

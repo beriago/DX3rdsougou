@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>DX3rd キャラクター作成支援</title>
+<link rel="stylesheet" href="css/style.css">
+<script src="js/theme.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js"></script>
+</head>
+<body>
+<div id="expFloatBadge" class="expFloatBadge" style="display:none;"><span class="expFloatBadgeLabel">消費経験点合計</span><span id="expFloatBadgeValue" class="expFloatBadgeValue">0</span></div>
+<div id="viewModeBanner" class="viewModeBanner" style="display:none;">
+<span>これは共有リンクで開いた閲覧用のキャラクターシートです。</span>
+<button id="enableEditBtn" type="button">編集を有効にする</button>
+</div>
+<div class="container">
+<header>
+<div class="titleRow">
+<h1>DX3rd キャラクター作成支援</h1>
+<div class="titleButtons">
+<button id="saveBtn">保存</button>
+<button id="loadBtn">読込</button>
+<button id="shareLinkBtn" type="button">共有リンク作成</button>
+<button id="resetBtn">初期化</button>
+<button id="toggleFxColBtn" type="button">左カラムを折りたたむ</button>
+<button id="exportImageBtn" type="button">画像で保存</button>
+<button id="exportPdfBtn" type="button">PDFで保存</button>
+<div class="themeSwitcher">
+<label for="themeSelect" style="margin:0;">配色</label>
+<select id="themeSelect">
+<option value="light">ライト（現行）</option>
+<option value="green">グリーン（目に優しい）</option>
+<option value="dark">ダーク</option>
+</select>
+</div>
+</div>
+</div>
+</header>
+
+<div class="mainLayout">
+<div class="fxCol">
+<!-- エフェクト -->
+<section class="card fxApp">
+<h2>エフェクト</h2>
+<section class="search-panel">
+    <div class="main-search">
+      <input id="keyword" type="search" placeholder="検索…" autocomplete="off">
+      <div class="supplement-filter">
+        
+        <div class="supplement-options" id="supplementOptions">
+          <label><input type="checkbox" value="EA" checked> EA</label>
+          <label><input type="checkbox" value="IA" checked> IA</label>
+          <label><input type="checkbox" value="HR" checked> HR</label>
+          <label><input type="checkbox" value="BC" checked> BC</label>
+          <label><input type="checkbox" value="RW" checked> RW</label>
+          <label><input type="checkbox" value="CC"> CC</label>
+          <label><input type="checkbox" value="UA" checked> UA</label>
+          <label><input type="checkbox" value="LM" checked> LM</label>
+          <label><input type="checkbox" value="DF" checked> DF</label>
+        </div>
+      </div>
+      <button class="clear-btn" id="clearBtn">クリア</button>
+    </div>
+    <div class="syndrome-row">
+      
+      <div class="supplement-options" id="syndromeOptions"></div>
+    </div>
+    <div class="filters">
+      <div class="filter"><label for="timing">タイミング</label><select id="timing"><option value="">すべて</option></select></div>
+      <div class="filter"><label for="skill">技能</label><select id="skill"><option value="">すべて</option></select></div>
+      <div class="filter"><label for="target">対象</label><select id="target"><option value="">すべて</option></select></div>
+      <div class="filter"><label for="range">射程</label><select id="range"><option value="">すべて</option></select></div>
+      <div class="filter"><label for="limit">制限</label><select id="limit"><option value="">すべて</option></select></div>
+    </div>
+  </section>
+<div class="content">
+<section class="results-panel">
+      <div class="results-head"><strong>検索結果</strong><span class="count" id="count"></span></div>
+      <div class="results" id="results"></div>
+    </section>
+<section class="detail-panel" id="detail">
+      <div class="empty">左の一覧からエフェクトを選択してください。</div>
+    </section>
+</div>
+</section>
+
+<!-- Dロイス -->
+<section class="card dloiseApp fxApp">
+<h2>Dロイス</h2>
+<section class="search-panel">
+    <div class="main-search dloise-single-row">
+      <input id="dloiseKeyword" type="search" placeholder="検索…" autocomplete="off">
+      <select id="dloiseSyndromeSelect" class="syndrome-select">
+        <option value="">シンドローム：すべて</option>
+      </select>
+      <div class="supplement-options" id="dloiseSupplementOptions">
+        <label><input type="checkbox" value="HR" checked> HR</label>
+        <label><input type="checkbox" value="DF" checked> DF</label>
+        <label><input type="checkbox" value="UA" checked> UA</label>
+        <label><input type="checkbox" value="LM" checked> LM</label>
+      </div>
+      <button class="clear-x-btn" id="dloiseClearBtn" title="クリア">×</button>
+    </div>
+  </section>
+<div class="content">
+<section class="results-panel">
+      <div class="results-head"><strong>検索結果</strong><span class="count" id="dloiseCount"></span></div>
+      <div class="results" id="dloiseResults"></div>
+    </section>
+<section class="detail-panel" id="dloiseDetail">
+      <div class="empty">左の一覧からDロイスを選択してください。</div>
+    </section>
+</div>
+</section>
+</div>
+<div class="charCol">
+<div class="charColLeft">
+<!-- キャラクター -->
+<section class="card charCard">
+<h2>キャラクター</h2>
+<div class="characterFields">
+<div class="inputGroup name">
+<label>名前</label>
+<input id="name" type="text"/>
+</div>
+<div class="inputGroup codename">
+<label>コードネーム</label>
+<input id="codename" type="text"/>
+</div>
+<div class="inputGroup small">
+<label>年齢</label>
+<input id="age" type="text"/>
+</div>
+<div class="inputGroup small">
+<label>性別</label>
+<input id="sex" type="text"/>
+</div>
+<div class="inputGroup small">
+<label>身長</label>
+<input id="height" type="text"/>
+</div>
+</div>
+</section>
+
+<!-- ワークス・シンドローム -->
+<section class="card collapsible-card worksCard">
+<h2>ワークス・シンドローム</h2>
+<div class="inputGroup abilityField">
+<label>能力値</label>
+<select id="abilityFilter"><option value="">すべて</option><option value="body">肉体</option><option value="sense">感覚</option><option value="mind">精神</option><option value="social">社会</option></select>
+</div>
+<div class="inputGroup worksField">
+<label>ワークス</label>
+<select id="workSelect"><option value="">選択してください</option></select>
+</div>
+<div class="inputGroup coverField">
+<label>カヴァー</label>
+<input id="cover" placeholder="会社員・高校生など" type="text"/>
+</div>
+<div class="inputGroup">
+<label>シンドローム①</label>
+<select id="syndrome1">
+<option>なし</option>
+</select>
+</div>
+<div class="inputGroup">
+<label>シンドローム②</label>
+<select id="syndrome2">
+<option>なし</option>
+</select>
+</div>
+<div class="inputGroup">
+<label>シンドローム③</label>
+<select id="syndrome3">
+<option>なし</option>
+</select>
+</div>
+</section>
+
+<!-- 4カラム -->
+<section class="quadGrid">
+<!-- 能力 -->
+<div class="card abilityCard">
+<h2>能力値</h2>
+<div class="abilityList" id="abilityTable">
+<div class="abilityRow">
+<div class="abilityHead"><span class="abilityName">肉体</span><span class="abilityFinal" id="bodyValue">0</span></div>
+<div class="counterCell"><span class="counterLabel">成長</span><button class="miniBtn abilityBtn" data-ability="body" data-field="growth" data-op="-">-</button><span class="counterNum" id="bodyGrowth">0</span><button class="miniBtn abilityBtn" data-ability="body" data-field="growth" data-op="+">+</button></div>
+<div class="counterCell"><span class="counterLabel">修正</span><button class="miniBtn abilityBtn" data-ability="body" data-field="correction" data-op="-">-</button><span class="counterNum" id="bodyCorrection">0</span><button class="miniBtn abilityBtn" data-ability="body" data-field="correction" data-op="+">+</button></div>
+</div>
+<div class="abilityRow">
+<div class="abilityHead"><span class="abilityName">感覚</span><span class="abilityFinal" id="senseValue">0</span></div>
+<div class="counterCell"><span class="counterLabel">成長</span><button class="miniBtn abilityBtn" data-ability="sense" data-field="growth" data-op="-">-</button><span class="counterNum" id="senseGrowth">0</span><button class="miniBtn abilityBtn" data-ability="sense" data-field="growth" data-op="+">+</button></div>
+<div class="counterCell"><span class="counterLabel">修正</span><button class="miniBtn abilityBtn" data-ability="sense" data-field="correction" data-op="-">-</button><span class="counterNum" id="senseCorrection">0</span><button class="miniBtn abilityBtn" data-ability="sense" data-field="correction" data-op="+">+</button></div>
+</div>
+<div class="abilityRow">
+<div class="abilityHead"><span class="abilityName">精神</span><span class="abilityFinal" id="mindValue">0</span></div>
+<div class="counterCell"><span class="counterLabel">成長</span><button class="miniBtn abilityBtn" data-ability="mind" data-field="growth" data-op="-">-</button><span class="counterNum" id="mindGrowth">0</span><button class="miniBtn abilityBtn" data-ability="mind" data-field="growth" data-op="+">+</button></div>
+<div class="counterCell"><span class="counterLabel">修正</span><button class="miniBtn abilityBtn" data-ability="mind" data-field="correction" data-op="-">-</button><span class="counterNum" id="mindCorrection">0</span><button class="miniBtn abilityBtn" data-ability="mind" data-field="correction" data-op="+">+</button></div>
+</div>
+<div class="abilityRow">
+<div class="abilityHead"><span class="abilityName">社会</span><span class="abilityFinal" id="socialValue">0</span></div>
+<div class="counterCell"><span class="counterLabel">成長</span><button class="miniBtn abilityBtn" data-ability="social" data-field="growth" data-op="-">-</button><span class="counterNum" id="socialGrowth">0</span><button class="miniBtn abilityBtn" data-ability="social" data-field="growth" data-op="+">+</button></div>
+<div class="counterCell"><span class="counterLabel">修正</span><button class="miniBtn abilityBtn" data-ability="social" data-field="correction" data-op="-">-</button><span class="counterNum" id="socialCorrection">0</span><button class="miniBtn abilityBtn" data-ability="social" data-field="correction" data-op="+">+</button></div>
+</div>
+</div>
+</div>
+<!-- ステータス -->
+<div class="card statusCard">
+<h2>ステータス</h2>
+<div class="statusGrid">
+<div class="statusItem statAdjustItem">
+<div class="erosionTop"><span class="statusLabel">HP</span><span class="statusNum" id="hpValue">0</span></div>
+<div class="erosionAdjustRow" data-stat="hp">
+<button class="erosionAdjustBtn" type="button" data-op="-">－</button>
+<span class="erosionAdjustVal" id="hpCorrection">±0</span>
+<button class="erosionAdjustBtn" type="button" data-op="+">＋</button>
+</div>
+</div>
+<div class="statusItem statAdjustItem">
+<div class="erosionTop"><span class="statusLabel">行動値</span><span class="statusNum" id="actionValue">0</span></div>
+<div class="erosionAdjustRow" data-stat="action">
+<button class="erosionAdjustBtn" type="button" data-op="-">－</button>
+<span class="erosionAdjustVal" id="actionCorrection">±0</span>
+<button class="erosionAdjustBtn" type="button" data-op="+">＋</button>
+</div>
+</div>
+<div class="statusItem statAdjustItem">
+<div class="erosionTop"><span class="statusLabel">戦闘移動</span><span class="statusNum" id="moveValue">0</span></div>
+</div>
+<div class="statusItem erosionItem">
+<div class="erosionTop"><span class="statusLabel">侵蝕値</span><span class="statusNum" id="erosionValue">0</span></div>
+<div class="erosionAdjustRow" data-stat="erosion">
+<button class="erosionAdjustBtn" type="button" data-op="-">－</button>
+<span class="erosionAdjustVal" id="erosionCorrection">±0</span>
+<button class="erosionAdjustBtn" type="button" data-op="+">＋</button>
+</div>
+</div>
+<div class="statusItem exp"><span class="statusLabel">消費経験点</span><span class="statusNum" id="expValue">0</span></div>
+<div class="statusItem statAdjustItem">
+<div class="erosionTop"><span class="statusLabel">財産点</span><span class="statusNum" id="wealthValue">0</span></div>
+<div class="erosionAdjustRow" data-stat="wealth">
+<button class="erosionAdjustBtn" type="button" data-op="-">－</button>
+<span class="erosionAdjustVal" id="wealthCorrection">±0</span>
+<button class="erosionAdjustBtn" type="button" data-op="+">＋</button>
+</div>
+</div>
+</div>
+</div>
+<!-- 技能 -->
+<div class="card skillCard">
+<h2>技能</h2>
+<div class="skillColumnList" id="userSkillList"></div>
+<button id="addSkillBtn" type="button">＋ 技能追加</button>
+</div>
+<!-- ライフパス -->
+<div class="card lifepathCard">
+<h2>ライフパス</h2>
+<div class="inputGroup">
+<label>出自</label>
+<select id="birth"></select>
+</div>
+<div class="inputGroup orgExpGroup">
+<label>所属組織</label>
+<select id="experienceType">
+<option value="student">学生</option>
+<option value="general">一般社会</option>
+<option value="underworld">裏社会</option>
+<option value="ugn">UGN</option>
+<option value="fh">FH</option>
+<option value="rb">RB</option>
+</select>
+<label>経験</label>
+<select id="experience"></select>
+</div>
+<div class="inputGroup">
+<label id="encounterLabel">邂逅</label>
+<select id="encounter"></select>
+</div>
+<div class="inputGroup">
+<label>覚醒</label>
+<select id="awakening"></select>
+</div>
+<div class="inputGroup">
+<label id="impulseLabel">衝動</label>
+<select id="impulse"></select>
+</div>
+</div>
+</section>
+
+</div>
+<div class="charColRight">
+<!-- 取得エフェクト -->
+<section class="card fxAcquiredCard collapsible-card">
+<div class="fxAcquiredHead">
+<h2>取得エフェクト<span id="fxAcquiredExpTotal" class="saved-exp-inline"></span></h2>
+<div class="saved-data-actions">
+<button id="exportSavedBtn" class="saved-data-btn" type="button">出力</button>
+<button id="importSavedBtn" class="saved-data-btn" type="button">読込</button>
+<input id="importSavedFile" type="file" accept=".json,application/json" hidden>
+<button id="clearSavedBtn" class="saved-data-btn" type="button">全削除</button>
+</div>
+</div>
+<div id="fxAcquiredList" class="saved-effects">
+      <div class="saved-empty">取得しているエフェクトはありません。</div>
+</div>
+</section>
+
+<!-- コンボ -->
+<section class="card comboCard collapsible-card">
+<div class="cardHeadRow">
+<h2>コンボ</h2>
+<button id="addComboBtn" class="small-add-btn" type="button" title="コンボ追加">＋</button>
+</div>
+<div id="comboList">
+<div class="combo-empty">コンボがありません。</div>
+</div>
+</section>
+
+<!-- 取得Dロイス -->
+<section class="card collapsible-card dloiseAcqCard">
+<h2>取得Dロイス</h2>
+<div id="acquiredDloiseList" class="saved-effects">
+<div class="saved-empty">取得しているDロイスはありません。</div>
+</div>
+</section>
+
+<!-- アイテム -->
+<section class="card collapsible-card itemsCard">
+<h2>アイテム</h2>
+
+<div class="itemGroup">
+<div class="itemGroupHeader">
+<div class="itemGroupTitle">
+<button class="group-toggle-btn" type="button" aria-label="折りたたむ">▾</button>
+<h3>武器</h3>
+</div>
+<button id="addWeaponBtn" type="button">＋武器追加</button>
+</div>
+<div class="itemTableWrap">
+<div class="itemTable weaponTable">
+<div class="itemTableHeader">
+<span class="col-name">アイテム名</span>
+<span class="col-equip">常備化</span>
+<span class="col-exp">経験点</span>
+<span class="col-skill">技能</span>
+<span class="col-hit">命中</span>
+<span class="col-atk">攻撃力</span>
+<span class="col-guard">ガード値</span>
+<span class="col-range">射程</span>
+<span class="col-effect">効果</span>
+<span class="col-del"></span>
+</div>
+<div id="weaponList">
+<div class="item-empty">武器がありません。</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="itemGroup">
+<div class="itemGroupHeader">
+<div class="itemGroupTitle">
+<button class="group-toggle-btn" type="button" aria-label="折りたたむ">▾</button>
+<h3>防具</h3>
+</div>
+<button id="addArmorBtn" type="button">＋防具追加</button>
+</div>
+<div class="itemTableWrap">
+<div class="itemTable armorTable">
+<div class="itemTableHeader">
+<span class="col-name">アイテム名</span>
+<span class="col-equip">常備化</span>
+<span class="col-exp">経験点</span>
+<span class="col-action">行動</span>
+<span class="col-dodge">ドッジ</span>
+<span class="col-armor">装甲</span>
+<span class="col-effect">効果</span>
+<span class="col-del"></span>
+</div>
+<div id="armorList">
+<div class="item-empty">防具がありません。</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="itemGroup">
+<div class="itemGroupHeader">
+<div class="itemGroupTitle">
+<button class="group-toggle-btn" type="button" aria-label="折りたたむ">▾</button>
+<h3>一般アイテム</h3>
+</div>
+<button id="addGeneralBtn" type="button">＋一般アイテム追加</button>
+</div>
+<div class="itemTableWrap">
+<div class="itemTable generalTable">
+<div class="itemTableHeader">
+<span class="col-name">アイテム名</span>
+<span class="col-equip">常備化</span>
+<span class="col-exp">経験点</span>
+<span class="col-skill">技能</span>
+<span class="col-effect">効果</span>
+<span class="col-del"></span>
+</div>
+<div id="generalList">
+<div class="item-empty">一般アイテムがありません。</div>
+</div>
+</div>
+</div>
+</div>
+
+</section>
+
+<!-- ロイス -->
+<section class="card collapsible-card roisCard">
+<div class="cardHeadRow">
+<h2>ロイス</h2>
+<button id="addRoisBtn" class="small-add-btn" type="button" title="ロイス追加">＋</button>
+</div>
+
+<div class="itemTableWrap">
+<div class="itemTable roisTable">
+<div class="itemTableHeader">
+<span class="col-check">S</span>
+<span class="col-skill">関係</span>
+<span class="col-name">名前</span>
+<span class="col-check"></span>
+<span class="col-skill">P感情</span>
+<span class="col-check"></span>
+<span class="col-skill">N感情</span>
+<span class="col-effect">説明</span>
+<span class="col-del"></span>
+</div>
+<div id="roisList">
+<div class="item-empty">ロイスがありません。</div>
+</div>
+</div>
+</div>
+
+<datalist id="pEmotionOptions">
+<option value="傾倒"></option>
+<option value="好奇心"></option>
+<option value="憧憬"></option>
+<option value="尊敬"></option>
+<option value="連帯感"></option>
+<option value="慈愛"></option>
+<option value="感服"></option>
+<option value="純愛"></option>
+<option value="友情"></option>
+<option value="慕情"></option>
+<option value="同情"></option>
+<option value="遣志"></option>
+<option value="庇護"></option>
+<option value="幸福感"></option>
+<option value="信頼"></option>
+<option value="執着"></option>
+<option value="親近感"></option>
+<option value="誠意"></option>
+<option value="好意"></option>
+<option value="有為"></option>
+<option value="尽力"></option>
+<option value="懐旧"></option>
+</datalist>
+<datalist id="nEmotionOptions">
+<option value="侮蔑"></option>
+<option value="食傷"></option>
+<option value="脅威"></option>
+<option value="嫉妬"></option>
+<option value="悔悟"></option>
+<option value="恐怖"></option>
+<option value="不安"></option>
+<option value="劣等感"></option>
+<option value="疎外感"></option>
+<option value="恥辱"></option>
+<option value="憐憫"></option>
+<option value="偏愛"></option>
+<option value="憎悪"></option>
+<option value="隔意"></option>
+<option value="嫌悪"></option>
+<option value="猜疑心"></option>
+<option value="厭気"></option>
+<option value="不信感"></option>
+<option value="不快感"></option>
+<option value="憤懣"></option>
+<option value="敵愾心"></option>
+<option value="無関心"></option>
+</datalist>
+
+</section>
+
+<!-- メモリー -->
+<section class="card collapsible-card memoryCardSection">
+<div class="cardHeadRow">
+<h2>メモリー</h2>
+<button id="addMemoryBtn" class="small-add-btn" type="button" title="ロイス追加">＋</button>
+</div>
+
+<div class="itemTableWrap">
+<div class="itemTable memoryTable">
+<div class="itemTableHeader">
+<span class="col-effect">名前</span>
+<span class="col-skill">関係</span>
+<span class="col-skill">感情</span>
+<span class="col-del"></span>
+</div>
+<div id="memoryList">
+<div class="item-empty">メモリーがありません。</div>
+</div>
+</div>
+</div>
+
+</section>
+
+<!-- メモ -->
+<section class="card collapsible-card memoCard">
+<h2>設定メモ</h2>
+<textarea id="memo">好き：
+嫌い：
+口調：
+髪型：
+髪色：
+瞳：
+肌：
+服装：
+モチーフ：</textarea>
+</section>
+</div>
+
+</div>
+</div>
+
+<script src="js/main.js"></script>
+<script src="js/app.js"></script>
+<script src="js/combo.js"></script>
+<script src="js/item.js"></script>
+<script src="js/saveLoad.js"></script>
+<script src="data/dloise.json"></script>
+<script src="js/dloiseSearch.js"></script>
+</body>
+</html>
