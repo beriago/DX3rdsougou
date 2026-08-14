@@ -130,7 +130,7 @@ function restoreSavedEntries(entries){
     if(!item||typeof item!=="object") return;
     const found=effects.find(e=>String(e.name||"")===String(item.name||"")&&String(e.supplement||"")===String(item.supplement||"")&&String(e.syndrome||"")===String(item.syndrome||""));
     if(!found) return;
-    const lv=Math.min(getMaxLv(found)+2,Math.max(1,Number(item.acquiredLv||1)));
+    const lv=Math.max(1,Number(item.acquiredLv||1));
     if(!restored.some(e=>savedEffectIdentity(e)===savedEffectIdentity(found))) restored.push({...found,acquiredLv:lv});
   });
   acquiredEffects=restored;
@@ -174,9 +174,8 @@ function getMaxLv(e){
 function changeSavedLv(index, delta){
   const e = acquiredEffects[index];
   if(!e) return;
-  const maxLv = getMaxLv(e) + 2;
   const current = Number(e.acquiredLv || 1);
-  e.acquiredLv = Math.min(maxLv, Math.max(1, current + delta));
+  e.acquiredLv = Math.max(1, current + delta);
   renderSaved();
 }
 
